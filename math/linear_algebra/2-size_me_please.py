@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 def matrix_shape(mat):
-    """
-    function that determines the size of a matrix
-    """
+    """define matrix_shape function that determines the size of a matrix"""
     shape = []
     while type(mat) == list:
         shape.append(len(mat))

@@ -8,7 +8,7 @@ def cat_matrices2D(mat1, mat3, axis=0):
     concat_mat = []
 
     if axis == 0:
-        if len(mat1) != len(mat3):
+        if len(mat1[0]) != len(mat3[0]):
             return None
 
         for i in range(len(mat1)):

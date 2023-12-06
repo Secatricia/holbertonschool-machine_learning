@@ -13,6 +13,8 @@ def cat_matrices2D(mat1, mat3, axis=0):
             for j in range(len(mat1[0])):
                 concat_mat.append(mat1[i][j])
             result.append(concat_mat)
+        for i in range(len(mat3)):
+            result.append(mat3[i])
 
     elif axis == 1:
         for i in range(len(mat1)):

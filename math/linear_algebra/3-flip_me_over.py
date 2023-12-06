@@ -9,7 +9,7 @@ def matrix_transpose(mat):
 
     nb_lignes = len(mat)
     nb_column = len(mat[0])
- 
+
     columns = []
 
     for i_column in range(nb_column):

@@ -25,4 +25,5 @@ def cat_matrices2D(mat1, mat3, axis=0):
             concat_mat = mat1[i] + mat3[i]
             result.append(concat_mat)
         return result
-    return None
+    else: 
+        None

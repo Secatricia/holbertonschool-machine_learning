@@ -4,7 +4,7 @@
 
 def cat_matrices2D(mat1, mat3, axis=0):
     """define cat_matrices2D function"""
-    m = []
+    result = []
     concat_mat = []
 
     if axis == 0:
@@ -12,12 +12,10 @@ def cat_matrices2D(mat1, mat3, axis=0):
             concat_mat = []
             for j in range(len(mat1[0])):
                 concat_mat.append(mat1[i][j])
-            m.append(concat_mat)
+            result.append(concat_mat)
         for i in range(len(mat3)):
-            concat_mat = []
-            for j in range(len(mat3[0])):
-                concat_mat.append(mat3[i][j])
-            m.append(concat_mat)
+            result.append(mat3[i])
+        return result
 
     elif axis == 1:
         if len(mat1) != len(mat3):
@@ -25,6 +23,6 @@ def cat_matrices2D(mat1, mat3, axis=0):
 
         for i in range(len(mat1)):
             concat_mat = mat1[i] + mat3[i]
-            m.append(concat_mat)
-
-    return m
+            result.append(concat_mat)
+        return result
+    return None

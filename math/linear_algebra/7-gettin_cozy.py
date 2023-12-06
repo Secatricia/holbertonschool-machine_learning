@@ -17,6 +17,9 @@ def cat_matrices2D(mat1, mat3, axis=0):
             result.append(mat3[i])
 
     elif axis == 1:
+        if len(mat1) != len(mat3):
+            return None
+
         for i in range(len(mat1)):
             concat_mat = mat1[i] + mat3[i]
             result.append(concat_mat)

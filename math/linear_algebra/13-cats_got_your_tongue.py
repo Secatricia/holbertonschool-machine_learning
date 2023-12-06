@@ -6,11 +6,4 @@ import numpy as np
 
 def np_cat(mat1, mat2, axis=0):
     """define np_cat function"""
-    if axis==0:
-        mat_result = np.vstack((mat1, mat2))
-        return mat_result
-    elif axis == 1:
-        mat_result = np.hstack((mat1, mat2))
-        return mat_result
-    else:
-        return None
+    return np.concatenate((mat1, mat2), axis)

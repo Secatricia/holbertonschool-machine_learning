@@ -10,4 +10,5 @@ def summation_i_squared(n):
     elif n == 1:
         return 1
     else:
-        return n**2 + summation_i_squared(n-1)
+        result n**2 + summation_i_squared(n-1)
+    return result

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""function that calculates"\sum_{i=1}^{n} i^2""""
+"""function that calculates\\sum_{i=1}^{n} i^2"""
 
 
 def summation_i_squared(n):

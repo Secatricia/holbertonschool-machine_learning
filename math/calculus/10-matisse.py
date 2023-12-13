@@ -4,14 +4,10 @@
 
 def poly_derivative(poly):
     """define poly_derivative function"""
-    if not isinstance(poly, list):
-        return None
-
-    if not all(isinstance(coeff, (int, float)) for coeff in poly):
-        return None
-
-    if not poly or poly == [0]:
+    if isinstance(poly, list) and len(poly) == 1:
         return [0]
+    if not isinstance(poly, list) or len(poly) < 2:
+        return None
 
     derivative = []
 

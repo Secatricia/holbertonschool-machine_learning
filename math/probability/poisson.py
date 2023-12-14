@@ -2,6 +2,8 @@
 """Create a class Poisson that represents a poisson distribution"""
 
 
+e = 2.7182818285
+
 class Poisson:
     """define class"""
     def __init__(self, data=None, lambtha=1.):
@@ -15,41 +17,29 @@ class Poisson:
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
-            self.lambtha = float(sum(data) / len(data))
-
-            if self.lambtha <= 0:
-                raise ValueError("lambtha must be a positive value")
+            self.lambtha = sum(data) / len(data)
 
     def pmf(self, k):
-        """function that calculates the value of 
-        the PMF for a given number of “successes”"""
-        k = int(k)
-
+        """Calculates the pmf function"""
+        if k is not int:
+            k = int(k)
         if k < 0:
             return 0
-        else:
-            result = (self.lambtha ** k) * (2.71828 ** (-self.lambtha)) / factorial(k)
-            return result
+        factoriel = 1
+        for i in range(1, k + 1):
+            factoriel = factoriel * i
+        return (e ** -self.lambtha * self.lambtha ** k) / factoriel
 
     def cdf(self, k):
-        """Function Calculates the value of the CDF
-        for a given number of “successes”"""
-        k = int(k)
-
+        """Calculates the cdf function"""
+        if k is not int:
+            k = int(k)
         if k < 0:
             return 0
-        else:
-            result = 0
-            pmf_sum = 0
-            for i in range(k + 1):
-                pmf_sum += self.pmf(i)
-            result = pmf_sum
-            return result
-
-
-def factorial(n):
-    """define factorial function"""
-    if n == 0 or n == 1:
-        return 1
-    else:
-        return n * factorial(n - 1)
+        cdf = 0
+        for i in range(0, k + 1):
+            factoriel = 1
+            for j in range(1, i + 1):
+                factoriel = factoriel * j
+            cdf += self.lambtha ** i / factoriel
+        return cdf * e ** -self.lambtha

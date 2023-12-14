@@ -4,6 +4,7 @@
 
 e = 2.7182818285
 
+
 class Poisson:
     """define class"""
     def __init__(self, data=None, lambtha=1.):

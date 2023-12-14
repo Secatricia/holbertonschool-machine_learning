@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Create a class Poisson that represents a poisson distribution"""
 
+
 class Poisson:
     """define class"""
     def __init__(self, data=None, lambtha=1.):
@@ -20,7 +21,8 @@ class Poisson:
                 raise ValueError("lambtha must be a positive value")
 
     def pmf(self, k):
-        """function that calculates the value of the PMF for a given number of “successes”"""
+        """function that calculates the value of 
+        the PMF for a given number of “successes”"""
         k = int(k)
 
         if k < 0:
@@ -28,9 +30,10 @@ class Poisson:
         else:
             result = (self.lambtha ** k) * (2.71828 ** (-self.lambtha)) / factorial(k)
             return result
-    
+
     def cdf(self, k):
-        """Function Calculates the value of the CDF for a given number of “successes”"""
+        """Function Calculates the value of the CDF
+        for a given number of “successes”"""
         k = int(k)
 
         if k < 0:
@@ -42,6 +45,7 @@ class Poisson:
                 pmf_sum += self.pmf(i)
             result = pmf_sum
             return result
+
 
 def factorial(n):
     """define factorial function"""

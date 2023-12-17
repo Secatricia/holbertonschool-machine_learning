@@ -6,8 +6,9 @@ e = 2.7182818285
 
 
 class Exponential:
-
+    """define exponential class"""
     def __init__(self, data=None, lambtha=1.):
+        """define function __init__ """
         if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
@@ -21,6 +22,7 @@ class Exponential:
 
             if self.lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
+
     def pdf(self, k):
         """ define pdf"""
         if k is None or k < 0:

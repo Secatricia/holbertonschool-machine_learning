@@ -8,19 +8,18 @@ class Normal:
         """define __init__ function"""
         if data is None:
             if stddev <= 0:
-                raise ValueError("stddev must be a positive value")
-            self.mean = float(mean)
-            self.stddev = float(stddev)
+                raise ValueError('stddev must be a positive value')
+            else:
+                self.mean = float(mean)
+                self.stddev = float(stddev)
         else:
             if not isinstance(data, list):
-                raise TypeError("data must be a list")
+                raise TypeError('data must be a list')
             if len(data) < 2:
-                raise ValueError("data must contain multiple values")
-            self.mean = float(sum(data) / len(data))
-            self.stddev = float((sum((x - self.mean) ** 2 for x in data) / len(data)) ** 0.5)
-
-            if self.stddev <= 0:
-                raise ValueError("stddev must be a positive value")
+                raise ValueError('data must contain multiple values')
+            self.mean = sum(data) / len(data)
+            sum_of_squares = sum((x - self.mean) ** 2 for x in data)
+            self.stddev = (sum_of_squares / len(data)) ** 0.5
 
     def z_score(self, x):
         """define z_score function"""

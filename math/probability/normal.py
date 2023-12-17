@@ -36,3 +36,17 @@ class Normal:
         constant = 1 / (self.stddev * (2 * 3.1415926536) ** 0.5)
         exponent = -(x - self.mean) ** 2 / (2 * self.stddev ** 2)
         return constant * (2.7182818285 ** exponent)
+
+    def cdf(self, x):
+        """define cdf function"""
+        z = self.z_score(x)
+        return 0.5 * (1 + self.approx_erf(z / 2 ** 0.5))
+
+    def approx_erf(self, x):
+        """define aprox_erf"""
+        num_pi = 3.1415926536
+        return (2 / (num_pi ** 0.5)) * (x
+                                        - (x ** 3) / 3
+                                        + (x ** 5) / 10
+                                        - (x ** 7) / 42
+                                        + (x ** 9) / 216)

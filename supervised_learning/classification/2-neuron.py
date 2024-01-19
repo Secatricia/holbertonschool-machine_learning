@@ -33,7 +33,7 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
-        """define function that Calculates the forward propagation of the neuron"""
+        """Function that Calculates the forward propagation of the neuron"""
         # Calculer la somme pondérée des entrées (z)
         z = np.dot(self.__W, X) + self.__b
         # Appliquer la fonction d'activation sigmoïde

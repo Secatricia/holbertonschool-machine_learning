@@ -52,7 +52,7 @@ class Neuron:
         """Evaluates the neuron’s predictions"""
         A = self.forward_prop(X)
 
-        label_value = np.where(A >= 0.5, 1, 0 )
+        label_value = np.where(A >= 0.5, 1, 0)
         result_cost = self.cost(Y, A)
 
         return label_value, result_cost

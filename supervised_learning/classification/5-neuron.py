@@ -57,7 +57,6 @@ class Neuron:
 
         return label_value, result_cost
 
-
     def gradient_descent(self, X, Y, A, alpha=0.05):
         """Calculates one pass of gradient descent on the neuron"""
         m = Y.shape[1]  # Nombre d'exemples

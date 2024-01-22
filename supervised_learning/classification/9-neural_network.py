@@ -34,7 +34,7 @@ class NeuralNetwork:
 
     @property
     def A1(self):
-        """This initializes the A1 activated output for the hidden layer with 0.
+        """This initializes the A1 activated output for the hidden layer with 0
         This value will be updated during the forward propagation process."""
         return self.__A1
 
@@ -42,7 +42,7 @@ class NeuralNetwork:
     def b1(self):
         """initializes the bias vector b1 for the hidden layer with zeros"""
         return self.__b1
-    
+
     @property
     def W2(self):
         """initializes the weight matrix W1 for the hidden layer

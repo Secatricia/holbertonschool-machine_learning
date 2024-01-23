@@ -67,6 +67,6 @@ class NeuralNetwork:
         """weighted sum of inputs (X) by weights (__W1), plus bias (__b1 )."""
         self.__A1 = 1 / (1 + np.exp(-Z1))
 
-        Z2 = np.dot(self.__W2, self.__A2) + self.__b2
+        Z2 = np.dot(self.__W2, self.__A1) + self.__b2
         self.__A2 = 1 / (1 + np.exp(-Z2))
         return self.__A1, self.__A2

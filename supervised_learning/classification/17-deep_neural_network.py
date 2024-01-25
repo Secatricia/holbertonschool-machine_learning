@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 class DeepNeuralNetwork:
     """defines a deep neural network performing binary classification"""
 

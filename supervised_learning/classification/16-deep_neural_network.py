@@ -11,9 +11,7 @@ class DeepNeuralNetwork:
     def __init__(self, nx, layers):
         """class constructor"""
         if not isinstance(nx, int) or nx <= 0:
-            raise TypeError("nx must be an integer")
-        if nx < 1:
-            raise ValueError("nx must be positive integer")
+            raise ValueError("nx must be a positive integer")
         if type(layers) is not list or not layers:
             raise TypeError("layers must be a list of positive integers")
 
@@ -22,7 +20,6 @@ class DeepNeuralNetwork:
         self.weights = {}
 
         for i in range(self.L):
-
             if type(layers[i]) is not int or layers[i] < 1:
                 raise TypeError("layers must be a list of positive integers")
 

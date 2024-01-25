@@ -10,7 +10,7 @@ class DeepNeuralNetwork:
 
     def __init__(self, nx, layers):
         """class constructor"""
-        if not isinstance(nx, int):
+        if not isinstance(nx, int)  or nx <= 0:
             raise TypeError("nx must be an integer")
         if nx < 1:
             raise ValueError("nx must be positive integer")

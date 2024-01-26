@@ -69,7 +69,7 @@ class DeepNeuralNetwork:
     def evaluate(self, X, Y):
         """Evaluates the neural network’s predictions"""
         A, _ = self.forward_prop(X)
-        A2 = self.__cache["A" + str(self.__L)]  # Extract the final output from the cache
+        A2 = self.__cache["A" + str(self.__L)]
         predicted_label = np.where(A2 >= 0.5, 1, 0)
         cost_value = self.cost(Y, A2)
         return predicted_label, cost_value

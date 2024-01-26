@@ -82,11 +82,10 @@ class DeepNeuralNetwork:
         # Backpropagation
         dz = cache['A' + str(self.__L)] - Y
         for i in range(self.__L, 0, -1):
-            A_prev = self.__cache["A" + str(i - 1)]
-            dW = np.dot(dz, A_prev.T) / m
+            A = self.__cache["A" + str(i - 1)]
+            dW = np.dot(dz, A.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
-            dz = np.dot(self.__weights["W" + str(i)].T, dz) * A_prev * (1 - A_prev)
+            dz = np.dot(self.__weights["W" + str(i)].T, dz) * A * (1 - A)
 
-            # Update weights and biases
             self.__weights["W" + str(i)] -= alpha * dW
             self.__weights["b" + str(i)] -= alpha * db

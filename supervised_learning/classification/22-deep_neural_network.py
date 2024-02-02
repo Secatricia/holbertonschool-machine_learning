@@ -107,8 +107,6 @@ class DeepNeuralNetwork:
 
             if iteration % 100 == 0:
                 cost = self.cost(Y, A)
-                print("Cost after {} iterations: {}".format(iteration, cost))
 
         predicted_labels, final_cost = self.evaluate(X, Y)
-        print("Training completed. Final cost: {}".format(final_cost))
         return predicted_labels, final_cost

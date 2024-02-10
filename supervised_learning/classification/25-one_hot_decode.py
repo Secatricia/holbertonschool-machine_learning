@@ -13,7 +13,7 @@ def one_hot_decode(one_hot):
     one_hot: a one-hot encoded numpy.ndarray with shape (classes, m)
 
     Returns:
-    A numpy.ndarray with shape (m, ) containing the numeric labels for each example, or None on failure
+    A numpy.ndarray with shape (m, )
     """
     if not isinstance(one_hot, np.ndarray) or len(one_hot.shape) != 2:
         return None

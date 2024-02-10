@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+
+
 """
     Class DeepNeuralNetwork : deep NN performing binary classification
 """
+
 
 import numpy as np
 import matplotlib.pyplot as plt

@@ -3,19 +3,10 @@
 
 
 import tensorflow.compat.v1 as tf
-import numpy as np
 
 def evaluate(X, Y, save_path):
     """
-    Evaluates the output of a neural network
-
-    Arguments:
-    - X: numpy.ndarray containing the input data to evaluate
-    - Y: numpy.ndarray containing the one-hot labels for X
-    - save_path: location to load the model from
-
-    Returns:
-    Tuple containing the network's prediction, accuracy, and loss
+    evaluates the output of a neural network
     """
     tf.reset_default_graph()
 

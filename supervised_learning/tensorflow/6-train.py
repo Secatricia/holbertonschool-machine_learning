@@ -9,7 +9,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha, i
     """
     builds, trains, and saves a neural network classifier
     """
-    tf.set_random_seed(0)
+     tf.set_random_seed(0)
 
     # Création des placeholders pour les données d'entrée et les étiquettes
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
@@ -45,8 +45,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha, i
             # Validation
             if i % 100 == 0 or i == 0 or i == iterations:
                 valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                print(f"After {i} iterations ({timestamp}):")
+                print(f"After {i} iterations:")
                 print(f"\tTraining Cost: {train_cost}")
                 print(f"\tTraining Accuracy: {train_accuracy}")
                 print(f"\tValidation Cost: {valid_cost}")

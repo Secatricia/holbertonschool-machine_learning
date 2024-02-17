@@ -3,7 +3,6 @@
 
 import numpy as np
 import tensorflow.compat.v1 as tf
-from datetime import datetime
 
 
 def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha, iterations, save_path="/tmp/model.ckpt"):

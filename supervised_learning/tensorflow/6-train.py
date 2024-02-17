@@ -48,8 +48,12 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
 
         for i in range(iterations + 1):
             # Entraînement
-            _, train_cost, train_accuracy = sess.run([train_op, loss, accuracy],
-                                                     feed_dict={x: X_train, y: Y_train})
+            cost_train = sess.run(loss, feed_dict={x: X_train, y: Y_train})
+            acc_train = sess.run(accuracy, feed_dict={x: X_train, y: Y_train})
+
+            cost_valid = sess.run(loss, feed_dict={x: X_valid, y: Y_valid})
+            acc_valid = sess.run(accuracy, feed_dict={x: X_valid, y: Y_valid})
+
             # Validation
             if i % 100 == 0 or i == 0 or i == iterations:
                 valid_cost, valid_accuracy = sess.run([loss, accuracy],

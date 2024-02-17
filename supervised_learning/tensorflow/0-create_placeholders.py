@@ -2,7 +2,7 @@
 """
 return two placeholders
 """
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 tf.disable_v2_behavior()
 
 

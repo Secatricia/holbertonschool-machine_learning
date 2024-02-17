@@ -23,7 +23,7 @@ def evaluate(X, Y, save_path):
     y = tf.get_collection('placeholders', scope=y_name)[0]
     y_pred = tf.get_collection('tensors', scope='layer_2/BiasAdd:0')[0]
     loss = tf.get_collection('tensors',
-                            scope='softmax_cross_entropy_loss/value:0')[0]
+                             scope='softmax_cross_entropy_loss/value:0')[0]
     accuracy = tf.get_collection('tensors', scope='Mean:0')[0]
 
     # Evaluate the model

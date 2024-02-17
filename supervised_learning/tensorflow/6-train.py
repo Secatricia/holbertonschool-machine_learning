@@ -3,6 +3,7 @@
 
 import tensorflow.compat.v1 as tf
 
+# Import des fonctions des exercices précédents
 create_placeholders = __import__('0-create_placeholders').create_placeholders
 forward_prop = __import__('2-forward_prop').forward_prop
 calculate_accuracy = __import__('3-calculate_accuracy').calculate_accuracy
@@ -10,7 +11,8 @@ calculate_loss = __import__('4-calculate_loss').calculate_loss
 create_train_op = __import__('5-create_train_op').create_train_op
 
 
-def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha, iterations, save_path="/tmp/model.ckpt"):
+def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
+          iterations, save_path="/tmp/model.ckpt"):
     """
     builds, trains, and saves a neural network classifier
     """
@@ -46,10 +48,12 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha, i
 
         for i in range(iterations + 1):
             # Entraînement
-            _, train_cost, train_accuracy = sess.run([train_op, loss, accuracy], feed_dict={x: X_train, y: Y_train})
+            _, train_cost, train_accuracy = sess.run([train_op, loss, accuracy],
+                                                     feed_dict={x: X_train, y: Y_train})
             # Validation
             if i % 100 == 0 or i == 0 or i == iterations:
-                valid_cost, valid_accuracy = sess.run([loss, accuracy], feed_dict={x: X_valid, y: Y_valid})
+                valid_cost, valid_accuracy = sess.run([loss, accuracy],
+                                                      feed_dict={x: X_valid, y: Y_valid})
                 print(f"After {i} iterations:")
                 print(f"\tTraining Cost: {train_cost}")
                 print(f"\tTraining Accuracy: {train_accuracy}")

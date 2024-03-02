@@ -2,7 +2,6 @@
 
 
 import numpy as np
-#import tensorflow.compat.v1. as tf
 
 def normalization_constants(X):
 

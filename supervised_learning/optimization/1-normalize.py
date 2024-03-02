@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Normalization Constants"""
+"""Normalization"""
 
 
 import numpy as np

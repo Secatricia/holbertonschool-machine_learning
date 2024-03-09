@@ -4,9 +4,7 @@
 
 import numpy as np
 
-
 def create_confusion_matrix(labels, logits):
-    """that creates a confusion matrix"""
     # Convert one-hot encoded labels and logits to class indices
     true_classes = np.argmax(labels, axis=1)
     pred_classes = np.argmax(logits, axis=1)
@@ -19,4 +17,4 @@ def create_confusion_matrix(labels, logits):
     for true_class, pred_class in zip(true_classes, pred_classes):
         confusion[true_class][pred_class] += 1
     
-    return confusion.astype(int)
+    return confusion.astype(float)

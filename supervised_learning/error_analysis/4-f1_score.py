@@ -1,6 +1,11 @@
+#!/usr/bin/env python3
+"""Error Analysis""" 
+
+
 import numpy as np
 from sensitivity import sensitivity
 from precision import precision
+
 
 def f1_score(confusion):
     """

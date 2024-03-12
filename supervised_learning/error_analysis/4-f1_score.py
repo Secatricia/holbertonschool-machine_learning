@@ -3,17 +3,21 @@
 
 
 import numpy as np
-from sensitivity import sensitivity
-from precision import precision
+sensitivity = __import__('1-sensitivity').sensitivity
+precision = __import__('2-precision').precision
 
 
 def f1_score(confusion):
-    """
-    Calculate the F1 score using sensitivity and precision.
-    """
-    sens = sensitivity(confusion)
-    prec = precision(confusion)
+    """ calculates the F1 score of a confusion matrix"""
+    classes = confusion.shape[0]
+    f1_scores = np.zeros(classes)
 
-    f1_score_per_class = 2 * (prec * sens) / (prec + sens)
+    for i in range(classes):
+        s_i = sensitivity(confusion, i)
+        precision_i = precision(confusion, i)
+        if s_i + precision_i == 0:
+            f1_scores[i] = 0
+        else:
+            f1_scores[i] = 2 * (s_i * precision_i) / (s_i + precision_i)
 
-    return f1_score_per_class
+    return f1_scores

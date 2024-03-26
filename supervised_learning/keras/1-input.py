@@ -14,7 +14,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         if i != len(layers) - 1:
             x = K.layers.Dense(
                 nodes,
-                activation=activation, 
+                activation=activation,
                 kernel_regularizer=kernel_reg)(x)
             x = K.layers.Dropout(1 - keep_prob)(x)
         else:

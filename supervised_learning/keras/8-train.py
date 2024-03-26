@@ -11,6 +11,7 @@ def train_model(network, data, labels, batch_size,
     decay_rate=1, save_best=False, filepath=None,
     verbose=True, shuffle=False):
     """save the best iteration of the model"""
+    callbacks = []
     if validation_data:
         if early_stopping:
             early_stop = K.callbacks.EarlyStopping(

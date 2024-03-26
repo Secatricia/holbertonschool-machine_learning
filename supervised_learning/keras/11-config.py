@@ -10,6 +10,7 @@ def save_config(network, filename):
     with open(filename, 'w') as f:
         f.write(network.to_json())
 
+
 def load_config(filename):
     """loads a model with a specific configuration"""
     with open(filename, 'r') as f:

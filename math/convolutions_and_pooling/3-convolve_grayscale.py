@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     """performs a convolution on grayscale images"""
     m, h, w = images.shape
@@ -32,8 +33,9 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     for i in range(oh):
         for j in range(ow):
             convolved_images[:, i, j] = np.sum(
-                padded_images[:, i*sh:i*sh+kh, j*sw:j*sw+kw] * kernel.reshape(1, kh, kw),
+                padded_images[:, i*sh:i*sh+kh, j*sw:j*sw+kw] * kernel.reshape(1,
+                kh, kw),
                 axis=(1, 2)
             )
-    
+
     return convolved_images

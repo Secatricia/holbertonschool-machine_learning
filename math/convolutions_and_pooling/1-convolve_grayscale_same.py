@@ -13,8 +13,8 @@ def convolve_grayscale_same(images, kernel):
     ph = kh // 2
     pw = kw // 2
 
-    padded_images = np.pad(images, ((0, 0), (ph, ph), (pw, pw)),
-                            mode='constant')
+    padded_images = np.pad(
+        images, ((0, 0), (ph, ph), (pw, pw)), mode='constant')
 
     convolved_images = np.zeros((m, h, w))
 

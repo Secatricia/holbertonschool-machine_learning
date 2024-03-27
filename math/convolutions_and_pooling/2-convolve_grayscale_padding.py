@@ -10,7 +10,7 @@ def convolve_grayscale_padding(images, kernel, padding):
     m, h, w = images.shape
     kh, kw = kernel.shape
     ph, pw = padding
-    
+
     padded_images = np.pad(
         images, ((0, 0), (ph, ph), (pw, pw)),
         mode='constant')

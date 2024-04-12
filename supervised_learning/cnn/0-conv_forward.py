@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 """Convolutional Neural Networks"""
 
 import numpy as np
@@ -22,7 +22,11 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
 
     A = np.zeros((m, h_out, w_out, c_new))
 
-    A_prev_pad = np.pad(A_prev, ((0, 0), (pad_h, pad_h), (pad_w, pad_w), (0, 0)), mode='constant')
+    A_prev_pad = np.pad(
+        A_prev, ((0, 0),
+        (pad_h, pad_h),
+        (pad_w, pad_w),
+        (0, 0)), mode='constant')
 
     for i in range(h_out):
         for j in range(w_out):
@@ -31,7 +35,9 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
                 vert_end = vert_start + kh
                 horiz_start = j * sw
                 horiz_end = horiz_start + kw
-                A[:, i, j, k] = np.sum(A_prev_pad[:, vert_start:vert_end, horiz_start:horiz_end, :] * W[:, :, :, k], axis=(1, 2, 3))
+                A[:, i, j, k] = np.sum(A_prev_pad[
+                    :, vert_start:vert_end, horiz_start:horiz_end,
+                    :] * W[:, :, :, k], axis=(1, 2, 3))
 
     A = A + b
 

@@ -4,6 +4,7 @@
 
 import tensorflow.compat.v1 as tf
 
+
 def lenet5(x, y):
     """builds a modified version of the LeNet-5 architecture"""
     initializer = tf.keras.initializers.VarianceScaling(scale=2.0)
@@ -12,11 +13,12 @@ def lenet5(x, y):
         filters=6, kernel_size=(5, 5),
         padding='same', activation=tf.nn.relu,
         kernel_initializer=initializer)(x)
+    pool1 = tf.layers.MaxPooling2D(
+        pool_size=(2, 2), strides=(2, 2))(conv1)
     conv2 = tf.keras.layers.Conv2D(
         filters=16, kernel_size=(5, 5),
         padding='valid', activation=tf.nn.relu,
         kernel_initializer=initializer)(pool1)
-    # Max pooling layer 2
     pool2 = tf.keras.layers.MaxPooling2D(
         pool_size=(2, 2), strides=(2, 2))(conv2)
 

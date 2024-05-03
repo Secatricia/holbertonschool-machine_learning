@@ -5,49 +5,72 @@
 import tensorflow.keras as K
 
 
+#!/usr/bin/env python3
+"""
+This module contains :
+Function that builds a projection block
+
+Function:
+   def projection_block(A_prev, filters, s=2):
+"""
+import tensorflow.keras as K
+
+
 def projection_block(A_prev, filters, s=2):
-    """
-    Builds a projection block as described in Deep Residual Learning
-    """
+    """builds a projection block"""
+
+    # Init Kernel
+    init = K.initializers.VarianceScaling(scale=2.0,
+                                          mode='fan_in',
+                                          distribution='truncated_normal',
+                                          seed=None)
+
+    # Init filters
     F11, F3, F12 = filters
 
-    # He normal initialization
-    init = K.initializers.he_normal()
+    # Conv1x1
+    conv1x1 = K.layers.Conv2D(F11,
+                              (1, 1),
+                              strides=s,
+                              kernel_initializer=init)(A_prev)
 
-    # Shortcut path
-    shortcut = K.layers.Conv2D(
-        filters=F12, kernel_size=(1, 1),
-        strides=(s, s), padding='valid',
-        kernel_initializer=init, name='shortcut_conv')(A_prev)
-    shortcut = K.layers.BatchNormalization(
-        axis=3, name='shortcut_batchnorm')(shortcut)
+    # Batch Norm
+    Bn1 = K.layers.BatchNormalization()(conv1x1)
 
-    # Main path
-    conv1 = K.layers.Conv2D(
-        filters=F11, kernel_size=(1, 1),
-        strides=(s, s), padding='valid',
-        kernel_initializer=init, name='conv1')(A_prev)
-    conv1_bn = K.layers.BatchNormalization(
-        axis=3, name='conv1_bn')(conv1)
-    conv1_relu = K.layers.ReLU(name='conv1_relu')(conv1_bn)
+    # Relu activation
+    relu_1 = K.layers.Activation(K.activations.relu)(Bn1)
 
-    conv2 = K.layers.Conv2D(
-        filters=F3, kernel_size=(3, 3),
-        strides=(1, 1), padding='same',
-        kernel_initializer=init, name='conv2')(conv1_relu)
-    conv2_bn = K.layers.BatchNormalization(
-        axis=3, name='conv2_bn')(conv2)
-    conv2_relu = K.layers.ReLU(name='conv2_relu')(conv2_bn)
+    # Conv3x3
+    conv3x3 = K.layers.Conv2D(F3,
+                              (3, 3),
+                              padding="same",
+                              kernel_initializer=init)(relu_1)
 
-    conv3 = K.layers.Conv2D(
-        filters=F12, kernel_size=(1, 1),
-        strides=(1, 1), padding='valid',
-        kernel_initializer=init, name='conv3')(conv2_relu)
-    conv3_bn = K.layers.BatchNormalization(
-        axis=3, name='conv3_bn')(conv3)
+    # Batch Norm
+    Bn2 = K.layers.BatchNormalization()(conv3x3)
 
-    # Add shortcut value to main path
-    add = K.layers.Add(name='add')([conv3_bn, shortcut])
-    output = K.layers.ReLU(name='output')(add)
+    # Relu activation
+    relu_2 = K.layers.Activation(K.activations.relu)(Bn2)
+    conv1x1_2 = K.layers.Conv2D(F12,
+                                (1, 1),
+                                kernel_initializer=init)(relu_2)
 
-    return output
+    # Batch Norm
+    Bn3 = K.layers.BatchNormalization()(conv1x1_2)
+
+    # conv1x1 shortcut connection
+    conv1x1_add = K.layers.Conv2D(F12,
+                                  (1, 1),
+                                  strides=s,
+                                  kernel_initializer=init)(A_prev)
+
+    # Batch Norm
+    Bn1_add = K.layers.BatchNormalization()(conv1x1_add)
+
+    # Concatenate outputs
+    add = K.layers.Add()([Bn3, Bn1_add])
+
+    # Relu activation
+    relu_3 = K.layers.Activation(K.activations.relu)(add)
+
+    return relu_3

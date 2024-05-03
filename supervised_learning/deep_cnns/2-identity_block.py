@@ -4,6 +4,7 @@
 
 import tensorflow.keras as K
 
+
 def identity_block(A_prev, filters):
     """
     Builds an identity block as described in Deep Residual Learning

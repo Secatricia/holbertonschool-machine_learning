@@ -7,50 +7,57 @@ identity_block = __import__('2-identity_block').identity_block
 projection_block = __import__('3-projection_block').projection_block
 
 
-def resnet50():
-    input_layer = K.Input(shape=(224, 224, 3))
+def identity_block(A_prev, filters):
+    """
+    Builds an identity block as described in Deep Residual Learning
+    """
+    # Initialize weights
+    init = K.initializers.VarianceScaling(scale=2.0, mode='fan_in',
+                                          distribution='truncated_normal', seed=None)
 
-    # Initial Convolution layer
-    conv1 = K.layers.Conv2D(64, kernel_size=(7, 7), strides=(2, 2), padding='same', kernel_initializer=K.initializers.he_normal(seed=None))(input_layer)
-    bn1 = K.layers.BatchNormalization(axis=3)(conv1)
-    relu1 = K.layers.Activation('relu')(bn1)
-    maxpool = K.layers.MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding='same')(relu1)
+    # Input layer
+    inputs = K.Input(shape=(224, 224, 3))
 
-    # Building ResNet blocks
-    # Stage 1
-    id1 = identity_block(maxpool, [64, 64, 256])
-    id2 = identity_block(id1, [64, 64, 256])
-    id3 = identity_block(id2, [64, 64, 256])
+    # Convolution 7x7
+    conv7x7 = K.layers.Conv2D(64, kernel_size=(7, 7), strides=2, padding="same",
+                               kernel_initializer=init)(inputs)
+    bn_conv7x7 = K.layers.BatchNormalization()(conv7x7)
+    relu_conv7x7 = K.layers.ReLU()(bn_conv7x7)
+
+    # Max pooling layer
+    max_pool = K.layers.MaxPooling2D(pool_size=(3, 3), padding="same", strides=2)(relu_conv7x7)
 
     # Stage 2
-    proj1 = projection_block(id3, [128, 128, 512])
-    id4 = identity_block(proj1, [128, 128, 512])
-    id5 = identity_block(id4, [128, 128, 512])
-    id6 = identity_block(id5, [128, 128, 512])
+    id_block_1 = projection_block(max_pool, [64, 64, 256], s=1)
+    id_block_2 = identity_block(id_block_1, [64, 64, 256])
+    id_block_3 = identity_block(id_block_2, [64, 64, 256])
 
     # Stage 3
-    proj2 = projection_block(id6, [256, 256, 1024])
-    id7 = identity_block(proj2, [256, 256, 1024])
-    id8 = identity_block(id7, [256, 256, 1024])
-    id9 = identity_block(id8, [256, 256, 1024])
-    id10 = identity_block(id9, [256, 256, 1024])
-    id11 = identity_block(id10, [256, 256, 1024])
+    proj_block_1 = projection_block(id_block_3, [128, 128, 512])
+    id_block_4 = identity_block(proj_block_1, [128, 128, 512])
+    id_block_5 = identity_block(id_block_4, [128, 128, 512])
+    id_block_6 = identity_block(id_block_5, [128, 128, 512])
 
     # Stage 4
-    proj3 = projection_block(id11, [512, 512, 2048])
-    id12 = identity_block(proj3, [512, 512, 2048])
-    id13 = identity_block(id12, [512, 512, 2048])
+    proj_block_2 = projection_block(id_block_6, [256, 256, 1024])
+    id_block_7 = identity_block(proj_block_2, [256, 256, 1024])
+    id_block_8 = identity_block(id_block_7, [256, 256, 1024])
+    id_block_9 = identity_block(id_block_8, [256, 256, 1024])
+    id_block_10 = identity_block(id_block_9, [256, 256, 1024])
+    id_block_11 = identity_block(id_block_10, [256, 256, 1024])
+
+    # Stage 5
+    proj_block_3 = projection_block(id_block_11, [512, 512, 2048])
+    id_block_12 = identity_block(proj_block_3, [512, 512, 2048])
+    id_block_13 = identity_block(id_block_12, [512, 512, 2048])
 
     # Average Pooling
-    avg_pool = K.layers.AveragePooling2D(pool_size=(7, 7), strides=(1, 1))(id13)
-
-    # Flatten layer
-    flatten = K.layers.Flatten()(avg_pool)
+    avg_pool = K.layers.AveragePooling2D(pool_size=(7, 7), strides=(1, 1))(id_block_13)
 
     # Output layer
-    output_layer = K.layers.Dense(1000, activation='softmax')(flatten)
+    output = K.layers.Dense(units=1000, activation='softmax', kernel_initializer=init)(avg_pool)
 
-    # Creating model
-    model = K.models.Model(inputs=input_layer, outputs=output_layer)
+    # Define the model
+    model = K.models.Model(inputs=inputs, outputs=output)
 
     return model

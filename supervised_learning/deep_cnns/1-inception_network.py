@@ -1,62 +1,74 @@
 #!/usr/bin/env python3
+"""Deep Convolutional Architectures"""
 
 
-import tensorflow as tf
-from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, concatenate
+import tensorflow.keras as K
+inception_block = __import__('0-inception_block').inception_block
 
 
-def inception_block(x, filters):
-    """Function to create an Inception block."""
+def inception_block(prev, filters):
+    """
+    Function to implement an inception block
+    
+    Arguments:
+    prev: Tensor containing the output of the previous layer
+    filters: Tuple or list of (F1, F3R, F3, F5R, F5, FPP) containing the following filters:
+             - F1: number of filters for the 1x1 convolution
+             - F3R: number of filters for the 1x1 convolution before the 3x3 convolution
+             - F3: number of filters for the 3x3 convolution
+             - F5R: number of filters for the 1x1 convolution before the 5x5 convolution
+             - F5: number of filters for the 5x5 convolution
+             - FPP: number of filters for the 1x1 convolution after the max pooling
+             
+    Returns:
+    Tensor containing the concatenated output of the inception block
+    """
+    F1, F3R, F3, F5R, F5, FPP = filters
+
     # 1x1 convolution branch
-    branch1x1 = Conv2D(filters[0], (1, 1), padding='same', activation='relu')(x)
+    conv1x1 = K.layers.Conv2D(F1, (1, 1), padding='same', activation='relu')(prev)
 
-    # 3x3 convolution branch
-    branch3x3 = Conv2D(filters[1], (1, 1), padding='same', activation='relu')(x)
-    branch3x3 = Conv2D(filters[2], (3, 3), padding='same', activation='relu')(branch3x3)
+    # 1x1 followed by 3x3 convolution branch
+    conv3x3 = K.layers.Conv2D(F3R, (1, 1), padding='same', activation='relu')(prev)
+    conv3x3 = K.layers.Conv2D(F3, (3, 3), padding='same', activation='relu')(conv3x3)
 
-    # 5x5 convolution branch
-    branch5x5 = Conv2D(filters[3], (1, 1), padding='same', activation='relu')(x)
-    branch5x5 = Conv2D(filters[4], (5, 5), padding='same', activation='relu')(branch5x5)
+    # 1x1 followed by 5x5 convolution branch
+    conv5x5 = K.layers.Conv2D(F5R, (1, 1), padding='same', activation='relu')(prev)
+    conv5x5 = K.layers.Conv2D(F5, (5, 5), padding='same', activation='relu')(conv5x5)
 
-    # Max pooling branch
-    branch_pool = MaxPooling2D((3, 3), strides=(1, 1), padding='same')(x)
-    branch_pool = Conv2D(filters[5], (1, 1), padding='same', activation='relu')(branch_pool)
+    # Max pooling followed by 1x1 convolution branch
+    pool = K.layers.MaxPooling2D((3, 3), strides=(1, 1), padding='same')(prev)
+    pool_proj = K.layers.Conv2D(FPP, (1, 1), padding='same', activation='relu')(pool)
 
-    # Concatenate all branches
-    output = concatenate([branch1x1, branch3x3, branch5x5, branch_pool], axis=3)
+    # Concatenate the outputs of all branches
+    output = K.layers.concatenate([conv1x1, conv3x3, conv5x5, pool_proj])
+
     return output
 
 def inception_network():
-    """Function to build the Inception network."""
-    input_layer = Input(shape=(224, 224, 3))
+    """
+    Function to build the Inception network
+    
+    Returns:
+    Keras model representing the Inception network
+    """
+    inputs = K.Input(shape=(224, 224, 3))
 
-    # First convolutional layer
-    x = Conv2D(64, (7, 7), strides=(2, 2), padding='same', activation='relu')(input_layer)
-    x = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(x)
+    # Initial conv layer
+    conv1 = K.layers.Conv2D(64, (7, 7), strides=(2, 2), padding='same', activation='relu')(inputs)
+    maxpool1 = K.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same')(conv1)
 
-    # Second convolutional layer
-    x = Conv2D(64, (1, 1), padding='same', activation='relu')(x)
-    x = Conv2D(192, (3, 3), padding='same', activation='relu')(x)
-    x = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(x)
+    # Inception blocks
+    inception1 = inception_block(maxpool1, (64, 96, 128, 16, 32, 32))
+    inception2 = inception_block(inception1, (128, 128, 192, 32, 96, 64))
 
-    # Inception modules
-    x = inception_block(x, [64, 96, 128, 16, 32, 32])
-    x = inception_block(x, [128, 128, 192, 32, 96, 64])
+    # Max pooling and dropout
+    maxpool2 = K.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same')(inception2)
+    dropout = K.layers.Dropout(0.4)(maxpool2)
 
-    # Max pooling layer
-    x = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(x)
+    # Dense layer
+    dense = K.layers.Dense(1000, activation='softmax')(dropout)
 
-    # Fully connected layers (not specified in the original paper)
-    x = tf.keras.layers.Flatten()(x)
-    x = tf.keras.layers.Dense(128, activation='relu')(x)
-    x = tf.keras.layers.Dense(64, activation='relu')(x)
+    model = K.Model(inputs, dense)
 
-    # Output layer
-    output_layer = tf.keras.layers.Dense(10, activation='softmax')(x)  # Adjust output size as needed
-
-    model = tf.keras.Model(inputs=input_layer, outputs=output_layer)
     return model
-
-# Test the function
-model = inception_network()
-model.summary()

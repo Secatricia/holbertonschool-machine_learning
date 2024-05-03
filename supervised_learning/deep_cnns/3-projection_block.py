@@ -5,23 +5,11 @@
 import tensorflow.keras as K
 
 
-#!/usr/bin/env python3
-"""
-This module contains :
-Function that builds a projection block
-
-Function:
-   def projection_block(A_prev, filters, s=2):
-"""
-import tensorflow.keras as K
-
-
 def projection_block(A_prev, filters, s=2):
     """builds a projection block"""
 
     # Init Kernel
-    init = K.initializers.VarianceScaling(scale=2.0,
-                                          mode='fan_in',
+    init = K.initializers.VarianceScaling(scale=2.0, mode='fan_in',
                                           distribution='truncated_normal',
                                           seed=None)
 
@@ -30,8 +18,7 @@ def projection_block(A_prev, filters, s=2):
 
     # Conv1x1
     conv1x1 = K.layers.Conv2D(F11,
-                              (1, 1),
-                              strides=s,
+                              (1, 1), strides=s,
                               kernel_initializer=init)(A_prev)
 
     # Batch Norm

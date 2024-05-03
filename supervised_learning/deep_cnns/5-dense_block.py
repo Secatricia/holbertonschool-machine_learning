@@ -6,7 +6,7 @@ import tensorflow.keras as K
 
 
 def dense_block(X, nb_filters, growth_rate, layers):
-    """Builds a dense block as described in Densely Connected Convolutional Networks."""
+    """Builds a dense block"""
     # Initialize kernel
     init = K.initializers.VarianceScaling(scale=2.0,
                                           mode='fan_in',

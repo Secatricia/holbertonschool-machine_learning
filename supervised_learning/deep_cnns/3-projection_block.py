@@ -42,7 +42,7 @@ def projection_block(A_prev, filters, s=2):
         kernel_initializer=init)(conv2_act)
     conv3_bn = K.layers.BatchNormalization(axis=3)(conv3)
 
-    # Add shortcut value to main path, and pass it through a ReLU activation
+    # Add shortcut value to main path
     add = K.layers.Add()([conv3_bn, shortcut])
     output = K.layers.Activation('relu')(add)
 

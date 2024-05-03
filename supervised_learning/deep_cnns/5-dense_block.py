@@ -7,32 +7,27 @@ import tensorflow.keras as K
 
 def dense_block(X, nb_filters, growth_rate, layers):
     """Builds a dense block as described in Densely Connected Convolutional Networks."""
-    # He normal initialization
-    initializer = K.initializers.he_normal(seed=None)
+    concat_layers = [X]
+    nb_filters_dense = nb_filters
 
-    # Save the input tensor for concatenation
-    concat_list = [X]
-
-    # Iterate through the number of layers
     for i in range(layers):
-        # Compute the number of filters
-        filters = nb_filters + i * growth_rate
-
-        # Bottleneck layer
-        X = K.layers.BatchNormalization(axis=3)(X)
+        # Batch normalization
+        X = K.layers.BatchNormalization()(X)
+        # ReLU activation
         X = K.layers.Activation('relu')(X)
-        X = K.layers.Conv2D(filters * 4, kernel_size=1, padding='same', kernel_initializer=initializer)(X)
-
-        # 3x3 convolutional layer
-        X = K.layers.BatchNormalization(axis=3)(X)
+        # Convolution with bottleneck
+        X = K.layers.Conv2D(filters=4 * growth_rate, kernel_size=1,
+                            padding='same', kernel_initializer='he_normal')(X)
+        # Batch normalization
+        X = K.layers.BatchNormalization()(X)
+        # ReLU activation
         X = K.layers.Activation('relu')(X)
-        X = K.layers.Conv2D(filters, kernel_size=3, padding='same', kernel_initializer=initializer)(X)
+        # Convolution
+        X = K.layers.Conv2D(filters=growth_rate, kernel_size=3,
+                            padding='same', kernel_initializer='he_normal')(X)
+        # Concatenate with previous layers
+        concat_layers.append(X)
+        X = K.layers.concatenate(concat_layers, axis=-1)
+        nb_filters_dense += growth_rate
 
-        # Append the output of the layer to the concatenation list
-        concat_list.append(X)
-
-        # Concatenate the list
-        X = K.layers.concatenate(concat_list)
-
-    # Return the concatenated output and the number of filters
-    return X, filters
+    return X, nb_filters_dense

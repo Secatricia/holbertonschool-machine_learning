@@ -1,6 +1,11 @@
+#!/usr/bin/env python3
+"""Deep Convolutional Architectures"""
+
+
 import tensorflow.keras as K
-from __import__('2-identity_block').identity_block import identity_block
-from __import__('3-projection_block').projection_block import projection_block
+identity_block = __import__('2-identity_block').identity_block
+projection_block = __import__('3-projection_block').projection_block
+
 
 def resnet50():
     input_layer = K.Input(shape=(224, 224, 3))

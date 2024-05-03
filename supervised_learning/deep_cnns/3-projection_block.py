@@ -27,19 +27,19 @@ def projection_block(A_prev, filters, s=2):
         strides=(s, s), padding='valid',
         kernel_initializer=init, name='conv1')(A_prev)
     conv1_bn = K.layers.BatchNormalization(axis=3, name='conv1_bn')(conv1)
-    conv1_act = K.layers.ReLU(name='conv1_relu')(conv1_bn)
+    conv1_relu = K.layers.ReLU(name='conv1_relu')(conv1_bn)
 
     conv2 = K.layers.Conv2D(
         filters=F3, kernel_size=(3, 3),
         strides=(1, 1), padding='same',
-        kernel_initializer=init, name='conv2')(conv1_act)
+        kernel_initializer=init, name='conv2')(conv1_relu)
     conv2_bn = K.layers.BatchNormalization(axis=3, name='conv2_bn')(conv2)
-    conv2_act = K.layers.ReLU(name='conv2_relu')(conv2_bn)
+    conv2_relu = K.layers.ReLU(name='conv2_relu')(conv2_bn)
 
     conv3 = K.layers.Conv2D(
         filters=F12, kernel_size=(1, 1),
         strides=(1, 1), padding='valid',
-        kernel_initializer=init, name='conv3')(conv2_act)
+        kernel_initializer=init, name='conv3')(conv2_relu)
     conv3_bn = K.layers.BatchNormalization(axis=3, name='conv3_bn')(conv3)
 
     # Add shortcut value to main path, and pass it through a ReLU activation
@@ -47,4 +47,3 @@ def projection_block(A_prev, filters, s=2):
     output = K.layers.ReLU(name='output')(add)
 
     return output
-
